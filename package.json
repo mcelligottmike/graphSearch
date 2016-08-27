@@ -1,0 +1,19 @@
+{
+  "name": "graph_search",
+  "version": "1.0.0",
+  "description": "Reads graph nodes and edges from file and finds shortest distance between two two given nodes",
+  "main": "main.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mcelligottmike/graphSearch.git"
+  },
+  "author": "Mike McElligott",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mcelligottmike/graphSearch/issues"
+  },
+  "homepage": "https://github.com/mcelligottmike/graphSearch#readme"
+}
