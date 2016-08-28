@@ -2,5 +2,5 @@
  * Created by mike mc on 27/08/2016.
  */
 {
-
+  "dataFile": "../data/SocialNetwork.txt"
 }
