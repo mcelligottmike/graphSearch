@@ -1,0 +1,9 @@
+A,B
+A,C
+A,D
+B,F
+B,G
+B,H
+C,D
+C,Z
+H,Z
