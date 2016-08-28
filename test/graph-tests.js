@@ -5,7 +5,7 @@
 // jscs:disable validateLineBreaks
 'use strict';
 
-var it = require("mocha/mocha.js").it;
+var it = require("mocha/lib/mocha.js").it;
 var describe;
 describe = require("mocha/lib/mocha.js").describe;
 
@@ -99,7 +99,7 @@ describe('Graph Functionality Tests', function () {
                 });
 
                 graph.readData().then((result) => {
-                    log.info("Have " + result + " entries");
+                    log.info(result);
                     done();
                 })
                     .catch((error) => {
