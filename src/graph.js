@@ -33,6 +33,8 @@ class Graph{
                 stream: prettyStdOut
             }]
         }) : this.config.get("log");
+
+        this.matrix = {};
     }
 
 
@@ -69,18 +71,18 @@ class Graph{
      * @param {string} destination - name of the node edge is going to
      *
      */
-    addEdge(graph, source, destination){
-        if (_.isUndefined(graph) || _.isUndefined(source) || _.isUndefined(destination)){
+    addEdge(source, destination){
+        if (_.isUndefined(source) || _.isUndefined(destination)){
             this.log.error("Illegal parameter(s) passed to addEdge()");
             throw new Error("Invalid parameter value observed");
         }
         // Look for record of source node in the graph
-        if (!_.isUndefined(graph[source])){
+        if (!_.isUndefined(this.matrix[source])){
             // already have a record of this source so add another edge
-            graph[source].push(destination);
+            this.matrix[source].push(destination);
         }
         else{
-            graph[source] = [destination];
+            this.matrix[source] = [destination];
         }
     }
 
@@ -93,32 +95,35 @@ class Graph{
      * @param {string} destination - name of the node edge is going to
      *
      */
-    removeEdge(graph, source, destination){
-        if (_.isUndefined(graph) || _.isUndefined(source) || _.isUndefined(destination)){
+    removeEdge(source, destination){
+        if (_.isUndefined(source) || _.isUndefined(destination)){
             this.log.error("Illegal parameter(s) passed to removeEdge()");
             throw new Error("Invalid parameter value observed");
         }
         // Look for record of source node in the graph
-        if (_.isUndefined(graph[source])) {
+        if (_.isUndefined(this.matrix[source])) {
             throw new Error("Request to remove edge from non-existent node");
         }
-        graph[source] = _.difference(graph[source],[destination]);
+        this.matrix[source] = _.difference(this.matrix[source],[destination]);
     }
 
-    getAdjacentNodes(graph, node){
-        return graph[node];
+    getAdjacentNodes(node){
+        if (!_.isUndefined(this.matrix[node])) {
+            return this.matrix[node];
+        }
+        return [];
     }
 
-    findEdge(graph, source, destination){
-        if (_.isUndefined(graph) || _.isUndefined(source) || _.isUndefined(destination)){
+    findEdge(source, destination){
+        if (_.isUndefined(source) || _.isUndefined(destination)){
             this.log.error("Illegal parameter(s) passed to removeEdge()");
             throw new Error("Invalid parameter value observed");
         }
         // Look for record of source node in the graph
-        if (_.isUndefined(graph[source])) {
+        if (_.isUndefined(this.matrix[source])) {
             throw new Error("Request to find edge from non-existent node");
         }
-        let matches = _.intersection(graph[source],[destination]);
+        let matches = _.intersection(this.matrix[source],[destination]);
 
         if (matches.length == 0){
             return false;
@@ -163,7 +168,7 @@ class Graph{
                     response.reject("Invalid File: line " + (numEntries + 1) + " : " + status.message);
                 }
                 try{
-                    this.addEdge(graph,status.elements[0],status.elements[1]);
+                    this.addEdge(status.elements[0],status.elements[1]);
                 }
                 catch (e) {
                     this.log.error(e);
@@ -172,8 +177,8 @@ class Graph{
             });
             lineReader.on('close', () => {
                 this.log.info('Got to the end of the file with ' + numEntries + ' entries observed');
-                this.log.debug(graph);
-                response.resolve(graph);
+                this.log.debug(this.matrix);
+                response.resolve(numEntries);
             });
 
 

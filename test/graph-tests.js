@@ -145,16 +145,17 @@ describe('Graph Functionality Tests', function () {
         /** @test {node query} */
         it('should successfully check for edge existence', function (done) {
             try {
-
-                var graph = new Graph({
+                let graph = new Graph({
                     log: log
                 });
 
-                let matrix = {"A":["B", "C", "D"]};
+                graph.addEdge("A","B");
+                graph.addEdge("A","C");
+                graph.addEdge("A","D");
 
-                if (graph.findEdge(matrix,"A","B") &&
-                    graph.findEdge(matrix,"A","C") &&
-                    graph.findEdge(matrix,"A","D")){
+                if (graph.findEdge("A","B") &&
+                    graph.findEdge("A","C") &&
+                    graph.findEdge("A","D")){
                     done();
                 }
                 else{
@@ -175,16 +176,12 @@ describe('Graph Functionality Tests', function () {
                     log: log
                 });
 
-                let matrix = {};
 
-                graph.addEdge(matrix,"A","B");
-                matrix.should.have.property('A').with.lengthOf(1);
-                graph.getAdjacentNodes(matrix,"A").should.be.instanceof(Array);
-                graph.getAdjacentNodes(matrix,"A").should.eql(["B"]);
-
-                graph.addEdge(matrix,"A","C");
-                matrix.should.have.property('A').with.lengthOf(2);
-                graph.getAdjacentNodes(matrix,"A").should.eql(["B","C"]);
+                graph.addEdge("A","B");
+                graph.getAdjacentNodes("A").should.be.instanceof(Array);
+                graph.getAdjacentNodes("A").should.eql(["B"]);
+                graph.addEdge("A","C");
+                graph.getAdjacentNodes("A").should.eql(["B","C"]);
 
                 done();
             }
@@ -202,23 +199,19 @@ describe('Graph Functionality Tests', function () {
                     log: log
                 });
 
-                let matrix = {};
+                graph.addEdge("A","B");
+                graph.addEdge("A","F");
+                graph.addEdge("A","X");
 
-                graph.addEdge(matrix,"A","B");
-                graph.addEdge(matrix,"A","F");
-                graph.addEdge(matrix,"A","X");
-                matrix.should.have.property('A').with.lengthOf(3);
+                graph.removeEdge("A", "F");
+                graph.getAdjacentNodes("A").should.eql(["B","X"]);
 
-                graph.removeEdge(matrix,"A", "F");
-                matrix.should.have.property('A').with.lengthOf(2);
-                graph.getAdjacentNodes(matrix,"A").should.eql(["B","X"]);
+                graph.removeEdge("A", "WWW"); // non existent - should not affect
+                graph.getAdjacentNodes("A").should.eql(["B","X"]);
 
-                graph.removeEdge(matrix,"A", "WWW"); // non existent - should not affect
-                matrix.should.have.property('A').with.lengthOf(2);
-
-                graph.removeEdge(matrix,"A", "B");
-                graph.removeEdge(matrix,"A", "X");
-                matrix.should.have.property('A').with.lengthOf(0);
+                graph.removeEdge("A", "B");
+                graph.removeEdge("A", "X");
+                graph.getAdjacentNodes("A").should.eql([]);
 
                 done();
             }
