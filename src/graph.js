@@ -84,6 +84,47 @@ class Graph{
         }
     }
 
+    /**
+     * Remove described edge from supplied matrix. </br>
+     * Fail silently if edge does not exist </br>
+     * </br>
+     * @param {array} graph - Where to store the relationship
+     * @param {string} source - name of the node edge is going from
+     * @param {string} destination - name of the node edge is going to
+     *
+     */
+    removeEdge(graph, source, destination){
+        if (_.isUndefined(graph) || _.isUndefined(source) || _.isUndefined(destination)){
+            this.log.error("Illegal parameter(s) passed to removeEdge()");
+            throw new Error("Invalid parameter value observed");
+        }
+        // Look for record of source node in the graph
+        if (_.isUndefined(graph[source])) {
+            throw new Error("Request to remove edge from non-existent node");
+        }
+        graph[source] = _.difference(graph[source],[destination]);
+    }
+
+    getAdjacentNodes(graph, node){
+        return graph[node];
+    }
+
+    findEdge(graph, source, destination){
+        if (_.isUndefined(graph) || _.isUndefined(source) || _.isUndefined(destination)){
+            this.log.error("Illegal parameter(s) passed to removeEdge()");
+            throw new Error("Invalid parameter value observed");
+        }
+        // Look for record of source node in the graph
+        if (_.isUndefined(graph[source])) {
+            throw new Error("Request to find edge from non-existent node");
+        }
+        let matches = _.intersection(graph[source],[destination]);
+
+        if (matches.length == 0){
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Read data from file and store in local matrix</br>
