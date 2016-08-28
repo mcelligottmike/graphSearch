@@ -34,7 +34,7 @@ const Graph = require('../src/graph');
 /** @test {Graph} */
 describe('Graph Functionality Tests', function () {
 
-    /** @test {Build from file} */
+    /** @test {Basic Validation} */
     describe('Entry Validation', function () {
 
         /** @test {validateEntry} */
@@ -86,7 +86,7 @@ describe('Graph Functionality Tests', function () {
     });
 
 
-    /** @test {Build from file} */
+    /** @test {File Handling} */
     describe('File handling test cases', function () {
 
         /** @test {ReadDataFromFile} */
@@ -138,5 +138,97 @@ describe('Graph Functionality Tests', function () {
             }
         });
     });
+
+    /** @test {Basic Graph Maintenance} */
+    describe('Graph basic query and update', function () {
+
+        /** @test {node query} */
+        it('should successfully check for edge existence', function (done) {
+            try {
+
+                var graph = new Graph({
+                    log: log
+                });
+
+                let matrix = {"A":["B", "C", "D"]};
+
+                if (graph.findEdge(matrix,"A","B") &&
+                    graph.findEdge(matrix,"A","C") &&
+                    graph.findEdge(matrix,"A","D")){
+                    done();
+                }
+                else{
+                    done("Edge finding not behaving as expected");
+                }
+            }
+            catch (e) {
+                log.error(e);
+                done(e);
+            }
+        });
+
+        /** @test {node addition} */
+        it('should successfully add two nodes and edge', function (done) {
+            try {
+
+                var graph = new Graph({
+                    log: log
+                });
+
+                let matrix = {};
+
+                graph.addEdge(matrix,"A","B");
+                matrix.should.have.property('A').with.lengthOf(1);
+                graph.getAdjacentNodes(matrix,"A").should.be.instanceof(Array);
+                graph.getAdjacentNodes(matrix,"A").should.eql(["B"]);
+
+                graph.addEdge(matrix,"A","C");
+                matrix.should.have.property('A').with.lengthOf(2);
+                graph.getAdjacentNodes(matrix,"A").should.eql(["B","C"]);
+
+                done();
+            }
+            catch (e) {
+                log.error(e);
+                done(e);
+            }
+        });
+
+        /** @test {edge removal} */
+        it('should successfully remove an edge', function (done) {
+            try {
+
+                var graph = new Graph({
+                    log: log
+                });
+
+                let matrix = {};
+
+                graph.addEdge(matrix,"A","B");
+                graph.addEdge(matrix,"A","F");
+                graph.addEdge(matrix,"A","X");
+                matrix.should.have.property('A').with.lengthOf(3);
+
+                graph.removeEdge(matrix,"A", "F");
+                matrix.should.have.property('A').with.lengthOf(2);
+                graph.getAdjacentNodes(matrix,"A").should.eql(["B","X"]);
+
+                graph.removeEdge(matrix,"A", "WWW"); // non existent - should not affect
+                matrix.should.have.property('A').with.lengthOf(2);
+
+                graph.removeEdge(matrix,"A", "B");
+                graph.removeEdge(matrix,"A", "X");
+                matrix.should.have.property('A').with.lengthOf(0);
+
+                done();
+            }
+            catch (e) {
+                log.error(e);
+                done(e);
+            }
+        });
+
+    });
+
 });
 
