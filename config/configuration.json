@@ -1,6 +1,13 @@
-/**
- * Created by mike mc on 27/08/2016.
- */
 {
-  "dataFile": "../data/SocialNetwork.txt"
+  "log": {
+    "name": "Graph Search",
+    "logLevel": "info"
+  },
+  "data": {
+    "file": "./data/SocialNetwork.txt"
+  },
+  "search": {
+    "maxDepth": 5,
+    "firstHitOnly": true
+  }
 }
