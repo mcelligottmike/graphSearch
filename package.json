@@ -4,6 +4,8 @@
   "description": "Reads graph nodes and edges from file and finds shortest distance between two two given nodes",
   "main": "main.js",
   "scripts": {
+    "start": "node ./src/app.js",
+    "jscs": "./node_modules/.bin/jscs --preset=crockford --esnext --reporter checkstyle --max-errors -1 **/*.js",
     "test": "test"
   },
   "repository": {
