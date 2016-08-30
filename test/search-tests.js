@@ -78,7 +78,7 @@ describe('Graph Search Tests', function () {
 
 
         /** @test {validateEntry} */
-        it('should successfully find paths in graph', function (done) {
+        it('should successfully find all paths in graph', function (done) {
             try {
 
                 let graph = new Graph({
@@ -97,7 +97,7 @@ describe('Graph Search Tests', function () {
                 graph.addEdge("H","M");
                 graph.addEdge("A","M");
 
-                let results = search.getAllPaths("A", "M");
+                let results = search.getPaths({source:"A", destination:"M", searchType:"allPaths"});
                 results.should.be.instanceof(Array).and.have.lengthOf(3);
 
                 done();
@@ -128,7 +128,7 @@ describe('Graph Search Tests', function () {
                 graph.addEdge("H","B"); // created a cycle here A->B->H->B->H->B....
                 graph.addEdge("A","M");
 
-                let results = search.getAllPaths("A", "M");
+                let results = search.getPaths({source:"A", destination:"M", searchType:"allPaths"});
 
                 results.should.be.instanceof(Array).and.have.lengthOf(2);
                 done();
@@ -140,6 +140,99 @@ describe('Graph Search Tests', function () {
             }
         });
 
+        it('should successfully find shortest path in graph', function (done) {
+            try {
+
+                let graph = new Graph({
+                        log: log
+                    }),
+                    search = new Search(graph,{log: log});
+
+                graph.addEdge("A","B");
+                graph.addEdge("A","C");
+                graph.addEdge("A","D");
+                graph.addEdge("B","H");
+                graph.addEdge("B","I");
+                graph.addEdge("B","J");
+                graph.addEdge("C","K");
+                graph.addEdge("C","M");
+                graph.addEdge("H","M");
+                graph.addEdge("A","M"); // shortest path
+
+                let results = search.getPaths({source:"A", destination:"M", searchType:"shortestPath"});
+                results.should.be.instanceof(Array).and.have.lengthOf(1);
+
+                done();
+
+            }
+            catch (e) {
+                log.error(e);
+                done(e);
+            }
+        });
+
+        it('should deal with source being same as destination for shortest path', function (done) {
+            try {
+
+                let graph = new Graph({
+                        log: log
+                    }),
+                    search = new Search(graph,{log: log});
+
+                graph.addEdge("A","B");
+                graph.addEdge("A","C");
+                graph.addEdge("A","D");
+                graph.addEdge("B","H");
+                graph.addEdge("B","I");
+                graph.addEdge("B","J");
+                graph.addEdge("C","K");
+                graph.addEdge("C","M");
+                graph.addEdge("H","M");
+                graph.addEdge("A","M");
+
+                let results = search.getPaths({source:"A", destination:"A", searchType:"shortestPath"});
+                results.should.be.instanceof(Array).and.have.lengthOf(1);
+
+                done();
+
+            }
+            catch (e) {
+                log.error(e);
+                done(e);
+            }
+        });
+
+        it('should find multiple shortest paths when more than 1 exist', function (done) {
+            try {
+
+                let graph = new Graph({
+                        log: log
+                    }),
+                    search = new Search(graph,{log: log});
+
+                graph.addEdge("A","B");
+                graph.addEdge("A","C");
+                graph.addEdge("A","D");
+                graph.addEdge("B","H");
+                graph.addEdge("B","I");
+                graph.addEdge("B","J");
+                graph.addEdge("C","K");
+                graph.addEdge("C","M"); // shortest path
+                graph.addEdge("H","M");
+                graph.addEdge("D","M"); // shortest path
+
+
+                let results = search.getPaths({source:"A", destination:"M", searchType:"shortestPath"});
+                results.should.be.instanceof(Array).and.have.lengthOf(2);
+
+                done();
+
+            }
+            catch (e) {
+                log.error(e);
+                done(e);
+            }
+        });
 
     });
 

@@ -42,7 +42,7 @@ describe('Graph Functionality Tests', function () {
             try {
 
                 var graph = new Graph({
-                    log: log,
+                    log: log
                 });
 
                 let status = graph.validateEntry("A,B");
@@ -96,6 +96,27 @@ describe('Graph Functionality Tests', function () {
                 var graph = new Graph({
                     log: log,
                     dataFile: "./test/data/test.txt"
+                });
+
+                graph.readData().then((result) => {
+                    log.info(result);
+                    done();
+                })
+                    .catch((error) => {
+                        done(error);
+                    });
+            } catch (e) {
+                log.error(e);
+                done(e);
+            }
+        });
+
+        /** @test {ReadDataFromFile} */
+        it('should use process the default file if none supplied', function (done) {
+            try {
+
+                var graph = new Graph({
+                    log: log
                 });
 
                 graph.readData().then((result) => {
