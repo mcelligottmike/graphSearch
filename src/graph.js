@@ -3,9 +3,9 @@
  */
 'use strict';
 
-const   _      = require('lodash'),
-        fs     = require('fs'),
-        nconf  = require('nconf');
+const   _      = require('lodash'),  // basic utilities
+        fs     = require('fs');      // file handling
+
 // ****************** SET UP LOGGING ***************************
 // If log handle not supplied to module then create one
 const bunyan            = require('bunyan');
@@ -17,22 +17,32 @@ prettyStdOut.pipe(process.stdout);
 class Graph{
 
     constructor(configuration) {
-        this.config = _.isUndefined(configuration) ? nconf.argv().env() : nconf.argv().env().defaults({configuration});
-        const argv  = _.isUndefined(this.config.argv) ? require('optimist').argv : this.config.argv;
 
-        this.log = _.isUndefined(this.config.get("log")) ? bunyan.createLogger({
-            name: 'graph',
-            serializers: {
-                reason: bunyan.stdSerializers.err
-            },
-            streams: process.env.NODE_ENV === 'test' ?
-                []
-                : [{
-                level: argv.llevel || 'info',
-                type: 'raw',
-                stream: prettyStdOut
-            }]
-        }) : this.config.get("log");
+        // This class can fallback to an onboard bunyan logger if no logger is supplied
+        // to it in the configuration. In this event, logging can be disabled by setting
+        // the NODE_ENV environment variable to 'test'
+
+        this.log = (!_.isUndefined(configuration) || !_.isUndefined(configuration.log)) ?
+                configuration.log :
+                bunyan.createLogger({
+                    name: 'graph',
+                    serializers: {
+                        reason: bunyan.stdSerializers.err
+                    },
+                    streams: process.env.NODE_ENV === 'test' ?
+                        []
+                        : [{
+                        level: 'info',
+                        type: 'raw',
+                        stream: prettyStdOut
+                    }]
+                });
+        this.dataFile = "./data/SocialNetwork.txt";
+
+        if (!_.isUndefined(configuration) && !_.isUndefined(configuration.dataFile)) {
+            this.dataFile = configuration.dataFile;
+        }
+
 
         this.matrix = {};
     }
@@ -76,6 +86,10 @@ class Graph{
             this.log.error("Illegal parameter(s) passed to addEdge()");
             throw new Error("Invalid parameter value observed");
         }
+        // Convert all node names to uppercase
+        source.toUpperCase();
+        destination.toUpperCase();
+
         // Look for record of source node in the graph
         if (!_.isUndefined(this.matrix[source])){
             // already have a record of this source so add another edge
@@ -131,6 +145,13 @@ class Graph{
         return true;
     }
 
+    existingNode(nodeName){
+        if (_.isUndefined(this.matrix[nodeName])) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Read data from file and store in local matrix</br>
      * </br>
@@ -145,14 +166,16 @@ class Graph{
             let graph       = {};
 
             if (_.isUndefined(filename)) {
-                filename = this.config.get("configuration:dataFile");
+                filename = this.dataFile;  // unless client has overridden the file to be checked, use default
             }
 
             // todo: check file exists and has acceptable privs
+            this.log.info("Reading graph data from: " + filename);
 
             let inputStream = fs.createReadStream(filename);
 
             inputStream.on('error', (err) => {
+                this.log.error("Could not process file: " + filename);
                 this.log.error(err.message);
                 response.reject(err);
             });
