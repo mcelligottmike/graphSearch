@@ -98,6 +98,11 @@ class Graph{
         else{
             this.matrix[source] = [destination];
         }
+
+        // if destination is not already recorded as a node then do so
+        if (_.isUndefined(this.matrix[destination])){
+            this.matrix[destination] = [];
+        }
     }
 
     /**
@@ -121,6 +126,13 @@ class Graph{
         this.matrix[source] = _.difference(this.matrix[source],[destination]);
     }
 
+    /**
+     * Get immediate forward connections of specified node </br>
+     * </br>
+     * @param {string} node - name of the node we want to uncover immediate relationships for
+     * @returns {array} list - list of immediate connections
+     *
+     */
     getAdjacentNodes(node){
         if (!_.isUndefined(this.matrix[node])) {
             return this.matrix[node];
@@ -128,6 +140,14 @@ class Graph{
         return [];
     }
 
+    /**
+     * Given two nodes, determine if there is a direct connection between them </br>
+     * </br>
+     * @param {string} source - edge going from this node
+     * @param {string} destination - edge going to this node
+     * @returns {boolean} true/false
+     *
+     */
     findEdge(source, destination){
         if (_.isUndefined(source) || _.isUndefined(destination)){
             this.log.error("Illegal parameter(s) passed to removeEdge()");
@@ -145,6 +165,13 @@ class Graph{
         return true;
     }
 
+    /**
+     * Given a name, check if there is a corresponding node in the graph
+     * </br>
+     * @param {string} name - name of node <br />
+     * @returns {boolean} true/false
+     *
+     */
     existingNode(nodeName){
         if (_.isUndefined(this.matrix[nodeName])) {
             return false;
@@ -157,7 +184,7 @@ class Graph{
      * </br>
      * </br>
      * @param {string} filename - data file with entries describing nodes and edges
-     * @returns {Promise} - resolve to matrix capturing graph structure
+     * @returns {Promise} - resolve to number of entries read from the file
      *
      */
     readData(filename){
