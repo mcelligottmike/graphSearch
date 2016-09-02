@@ -242,6 +242,49 @@ describe('Graph Functionality Tests', function () {
             }
         });
 
+        /** @test {edge removal} */
+        it('should throw an exception if requested to remove edge with node that does not exist', function (done) {
+            try {
+
+                var graph = new Graph({
+                    log: log
+                });
+
+                graph.addEdge("A","B");
+                graph.addEdge("A","F");
+                graph.addEdge("A","X");
+
+                graph.removeEdge("Y", "B");  // this should throw an exception
+
+                log.error(e);
+                done("Failed to throw exception for edge removal with non-existent node");
+            }
+            catch (e) {
+                done();
+            }
+        });
+
+        /** @test {edge removal} */
+        it('should ignore requests to remove edge that does not exist between valid nodes', function (done) {
+            try {
+
+                var graph = new Graph({
+                    log: log
+                });
+
+                graph.addEdge("A","B");
+                graph.addEdge("A","F");
+                graph.addEdge("A","X");
+                graph.addEdge("F","Y");
+
+                graph.removeEdge("A", "F");  // this should throw an exception
+                done();
+            }
+            catch (e) {
+                log.error(e);
+                done("Did not fail silently for edge removal");
+            }
+        });
     });
 
 });
