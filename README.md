@@ -16,8 +16,14 @@ The code uses
     * Dracula Graph library purely for visuals on the browser
     * Bunyan for logging
     * nConf for handling configuration options
-    * express for simple web server to facilitate simple ajax UI
+    * express for simple web server to facilitate basic ajax UI
 
 
 Native nodejs profiler was used for performance optimization - biggest culprit being an early choice of an array for the blacklist instead of a map. 
 
+# Usage
+Code was developed against node 6. On downloading the code:
+    * npm install - downloads and install necessary support libraries
+    * npm run-script test - run unit tests
+    * npm run-script cover - run code coverage checks [Note: generates [output](coverage/lcov-report/index.html "Coverage report") successfully but error shown at output at the end
+    * node app.js - start web server and visit http://localhost:8081 for user interface
