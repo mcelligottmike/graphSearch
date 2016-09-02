@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src\graphSearch.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">src/</a> graphSearch.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">82.24% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>88/107</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">80% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>52/65</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>4/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">82.24% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>88/107</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">39×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * Created by mike mc on 28/08/2016.
+ */
+&nbsp;
+'use strict';
+&nbsp;
+const   _      = require('lodash');
+&nbsp;
+// ****************** SET UP LOGGING ***************************
+// If log handle not supplied to module then create one
+const bunyan            = require('bunyan');
+const PrettyStream      = require('bunyan-prettystream');
+const prettyStdOut      = new PrettyStream();
+prettyStdOut.pipe(process.stdout);
+&nbsp;
+class GraphSearch{
+&nbsp;
+    constructor(graph, configuration){
+&nbsp;
+        if (!_.isObject(graph)){
+            throw new Error("Expected graph object to be passed to search");
+        }
+        this.graph = graph;
+&nbsp;
+        // *************************************
+        // This class can fallback to an onboard bunyan logger if no logger is supplied
+        // to it in the configuration. In this event, logging can be disabled by setting
+        // the NODE_ENV environment variable to 'test'
+        // *************************************
+        this.log = (!_.isUndefined(configuration) || <span class="branch-1 cbranch-no" title="branch not covered" >!_.isUndefined(configuration.log))</span> ?
+            configuration.log :
+<span class="branch-1 cbranch-no" title="branch not covered" >            bunyan.createLogger({</span>
+                name: 'graphSearch',
+                serializers: {
+                    reason: bunyan.stdSerializers.err
+                },
+                streams: process.env.NODE_ENV === 'test' ?
+                    []
+                    : [{
+                    level: 'info',
+                    type: 'raw',
+                    stream: prettyStdOut
+                }]
+            });
+&nbsp;
+        this.maxDepth = 5; // This only comes into effect when we seek to elucidate a user's entire network
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (!_.isUndefined(configuration) &amp;&amp; !_.isUndefined(configuration.maxDepth)) {
+<span class="cstat-no" title="statement not covered" >            this.maxDepth = configuration.maxDepth;</span>
+        }
+&nbsp;
+        this.firstHitOnly = false; // When we find a short path, don't attempt to carry on and find all shortest paths
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (!_.isUndefined(configuration) &amp;&amp; !_.isUndefined(configuration.firstHitOnly)) {
+<span class="cstat-no" title="statement not covered" >            this.firstHitOnly = configuration.firstHitOnly;</span>
+        }
+    }
+&nbsp;
+&nbsp;
+    /**
+     * Given a node, discover all nodes they are connected to. If the node is connected to the same node &lt;/br&gt;
+     * through multiple paths, then only the most direct path is revealed &lt;br/&gt;
+     * Note that we only traverse upto a maximum depth determined by maxDepth in the configuration (default 5 if missing) &lt;br/&gt;
+     * &lt;/br&gt;
+     * @param {string} name - node we want to discover network for
+     * @returns {array} contacts - list of paths to distinct contacts
+     *
+     */
+&nbsp;
+    revealContacts(nodeName){
+&nbsp;
+        let searchPaths = [[nodeName]]; // tracks the paths we are currently investigating
+&nbsp;
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (_.isUndefined(nodeName) || (!_.isString(nodeName))){
+<span class="cstat-no" title="statement not covered" >            console.error("Missing Source Node from search criteria");</span>
+<span class="cstat-no" title="statement not covered" >            this.log.error("Missing Source Node from search criteria");</span>
+<span class="cstat-no" title="statement not covered" >            return [];</span>
+        }
+&nbsp;
+        let blackList = {},  // used to prevent cycles
+            stillProgressing = false;
+&nbsp;
+        let leafPosition = 0, layerCount = 0, abandonedPaths = 0;
+&nbsp;
+        blackList[nodeName] = 1;
+        do {
+            stillProgressing = false;
+            for (let i = 0; i &lt; searchPaths.length; i++) {
+&nbsp;
+                // get leaf node
+                leafPosition = searchPaths[i].length - 1;
+&nbsp;
+                let adjacentNodes = this.graph.getAdjacentNodes(searchPaths[i][leafPosition]),
+                    newPath = [];
+&nbsp;
+                if (adjacentNodes.length &gt; 0) {
+&nbsp;
+                    for (let x = 0; x &lt; adjacentNodes.length; ++x) {
+                        // have we encountered this node already? If so then discard
+                        if (_.isUndefined(blackList[adjacentNodes[x]])) {
+                            newPath = searchPaths[i].slice(); // clone original path
+                            newPath.push(adjacentNodes[x]);
+                            searchPaths.push(newPath.slice()); // append copy of newPath into scratchList
+                            blackList[adjacentNodes[x]] = 1; // prevent cycles
+&nbsp;
+                            stillProgressing = true;
+                        }
+                        else {
+                            // else ignore this node as we have already taken it into account
+                            abandonedPaths++;
+                        }
+                    }
+                }
+            }
+&nbsp;
+            ++layerCount;
+            <span class="missing-if-branch" title="if path not taken" >I</span>if (layerCount &gt;= this.maxDepth){
+<span class="cstat-no" title="statement not covered" >                this.log.info("Hit maximum search depth for user network search");</span>
+<span class="cstat-no" title="statement not covered" >                stillProgressing = false;</span>
+            }
+            this.log.info("At depth: " + layerCount);
+            this.log.info("Current number of paths being considered: " + searchPaths.length);
+            this.log.info("Total Abandoned Paths so far [" + abandonedPaths + "] paths");
+&nbsp;
+        } while (stillProgressing);
+&nbsp;
+        this.log.info(searchPaths.length + " Paths found from " + nodeName);
+        for (let x = 0; x &lt; searchPaths.length; ++x) {
+            this.log.debug(_.join(searchPaths[x],"-&gt;"));
+        }
+&nbsp;
+        return searchPaths;
+    }
+&nbsp;
+    /**
+     * Get the paths from source node to destination node&lt;/br&gt;
+     * &lt;/br&gt;
+     * @param {object} conditions - &lt;ul&gt; &lt;li&gt; conditions.source =&gt; search from this node &lt;/li&gt;
+     *                              &lt;li&gt; conditions.destination =&gt; search for connection to this node &lt;/li&gt;
+     *                              &lt;li&gt; conditions.searchType =&gt; "allPaths" =&gt; find all paths from source to dest, "shortestPath" =&gt; find shortest path(s) to dest &lt;/li&gt;&lt;/ul&gt;
+     * @returns {array} paths - list of paths to specified contact
+     *
+     */
+    getPaths(searchConditions){
+&nbsp;
+        let searchPaths = [];
+&nbsp;
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (_.isUndefined(searchConditions.source) || (!_.isString(searchConditions.source))){
+<span class="cstat-no" title="statement not covered" >            console.error("Missing Source Node from search criteria");</span>
+<span class="cstat-no" title="statement not covered" >            this.log.error("Missing Source Node from search criteria");</span>
+<span class="cstat-no" title="statement not covered" >            return [];</span>
+        }
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.graph.existingNode(searchConditions.source)){
+<span class="cstat-no" title="statement not covered" >            this.log.error("Source node does not exist in the network")</span>
+<span class="cstat-no" title="statement not covered" >            return [];</span>
+        }
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (_.isUndefined(searchConditions.destination) || (!_.isString(searchConditions.destination))){
+<span class="cstat-no" title="statement not covered" >            console.error("Missing Destination Node from search criteria");</span>
+<span class="cstat-no" title="statement not covered" >            this.log.error("Missing Destination Node from search criteria");</span>
+<span class="cstat-no" title="statement not covered" >            return [];</span>
+        }
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.graph.existingNode(searchConditions.destination)){
+<span class="cstat-no" title="statement not covered" >            this.log.error("Destination node does not exist in the network");</span>
+<span class="cstat-no" title="statement not covered" >            return [];</span>
+        }
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (_.isUndefined(searchConditions.searchType) || (!_.isString(searchConditions.searchType))){
+<span class="cstat-no" title="statement not covered" >            searchConditions.searchType = "allPaths";</span>
+<span class="cstat-no" title="statement not covered" >            this.log.info("Defaulting to finding all search paths");</span>
+        }
+&nbsp;
+        searchPaths = [[searchConditions.source]]; // tracks the paths we are currently investigating
+&nbsp;
+        if ((searchConditions.searchType === "shortestPath") &amp;&amp;
+            (searchConditions.source === searchConditions.destination)){
+            this.log.info("Source and destination nodes are the same");
+            searchPaths[0].push(searchConditions.destination);
+        }
+        else {
+&nbsp;
+            let blackList = {},  // used to prevent cycles &amp; path search duplication
+                scratchList = [],
+                foundShortest = false, stillProgressing = false;
+&nbsp;
+            let leafPosition = 0, layerCount = 0, abandonedPaths = 0;
+&nbsp;
+            blackList[searchConditions.source] = 1;
+            do {
+                scratchList = [];
+                stillProgressing = false;
+                for (let i = 0; i &lt; searchPaths.length; i++) {
+&nbsp;
+                    // get leaf node
+                    leafPosition = searchPaths[i].length - 1;
+&nbsp;
+                    if (searchPaths[i][leafPosition] === searchConditions.destination) {
+                        // no need to progress any further along this path
+                        scratchList.push(searchPaths[i].slice());
+                    }
+                    else
+                    {
+                        let adjacentNodes = this.graph.getAdjacentNodes(searchPaths[i][leafPosition]),
+                            newPath = [];
+&nbsp;
+                        if (adjacentNodes.length &gt; 0) {
+                            for (let x = 0; x &lt; adjacentNodes.length; ++x) {
+&nbsp;
+                                // have we encountered this node already? If so then discard
+                                if (_.isUndefined(blackList[adjacentNodes[x]])) {
+                                    newPath = searchPaths[i].slice(); // clone original path
+                                    newPath.push(adjacentNodes[x]);
+                                    scratchList.push(newPath.slice()); // append copy of newPath into scratchList
+                                    if (adjacentNodes[x] != searchConditions.destination) {
+                                        blackList[adjacentNodes[x]] = 1; // prevent cycles
+                                    }
+                                    stillProgressing = true;
+                                }
+                                else{
+                                    // else ignore this node as we have already taken it into account
+                                    abandonedPaths++;
+                                }
+&nbsp;
+&nbsp;
+                            }
+                        }
+                    }
+                }
+&nbsp;
+                // After traversing down another layer in the graph, lets check if we
+                // have reached the destination on any of the paths
+                if (searchConditions.searchType === "shortestPath") {
+                    let shortestPaths = scratchList.filter(function (path) {
+                        return (path[leafPosition] === searchConditions.destination);
+                    });
+                    if ((shortestPaths.length &gt; 0) &amp;&amp; (shortestPaths.length &lt; searchPaths.length)) {
+                        scratchList = shortestPaths;
+                        foundShortest = true;
+                    }
+                }
+&nbsp;
+                ++layerCount;
+                this.log.info("At depth: " + layerCount);
+                this.log.info("Current number of paths being considered: " + scratchList.length);
+                this.log.info("Total Abandoned Paths so far [" + abandonedPaths + "] paths");
+&nbsp;
+                searchPaths = scratchList;
+&nbsp;
+                // todo: sort the searchpaths so we check those that have the least number of
+                // acquaintances first - will optimize for all but the worst case
+&nbsp;
+&nbsp;
+            } while ((searchConditions.searchType === "allPaths" &amp;&amp; stillProgressing) ||
+                     (searchConditions.searchType === "shortestPath" &amp;&amp; !foundShortest &amp;&amp; stillProgressing));
+        }
+        this.log.info(searchPaths.length + " Paths found from " + searchConditions.source + " to " + searchConditions.destination);
+        for (let x = 0; x &lt; searchPaths.length; ++x) {
+            this.log.debug(_.join(searchPaths[x],"-&gt;"));
+        }
+        return searchPaths;
+    }
+}
+&nbsp;
+module.exports = GraphSearch;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Sep 02 2016 22:30:43 GMT+0100 (GMT Daylight Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
