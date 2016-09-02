@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Graph Search</title>
+    <script language="javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/raphael-min.js"></script>
+    <script type="text/javascript" src="/js/dracula_graffle.js"></script>
+    <script type="text/javascript" src="/js/dracula_graph.js"></script>
+
+    <script>
+        function showShortestPath () {
+            $.ajax({
+                url: "/search?source="+$('#source').val() + "&destination=" + $('#destination').val(),
+                // the URL for the request
+                type: "GET",
+                // whether this is a POST or GET request
+                dataType: "json",
+                // the type of data we expect back
+                success: function (responseJson) {
+                    // code to run if the request succeeds; parameter = response
+
+                    // clear any existing graph display
+                    $('#canvas').html(''); $('#search_results').html("");
+
+                    // $('#search_results').html(responseJson);
+
+                    if ($.isArray(responseJson) && (responseJson.length > 0)) {
+                        var g = new Graph();
+                        for (let x = 0; x < responseJson.length; ++x) {
+                            for (let y = 0; y < responseJson[x].length - 1; ++y){
+                                g.addEdge(responseJson[x][y], responseJson[x][y + 1], { directed : true });
+                            }
+                        }
+
+                        var layouter = new Graph.Layout.Spring(g);
+                        layouter.layout();
+
+                        var renderer = new Graph.Renderer.Raphael('canvas', g, 800, 600);
+                        renderer.draw();
+                    }
+                    else{
+                        $('#search_results').html("<h2>No matches found</h2>");
+                    }
+                },
+                error: function (xhr, status) {
+                    // code run if request fails; raw request and status
+                    console.log("Sorry, there was a problem!");
+                },
+                complete: function (xhr, status) {  	// code to run regardless of success or failure
+                    console.log("The request is complete!");
+                }
+            })
+
+
+        }
+
+        function showAllShortestPaths () {
+            $.ajax({
+                url: "/searchAll?source="+$('#source').val(),
+                type: "GET",
+                dataType: "json",
+                success: function (responseJson) {
+                    // clear any existing graph display
+                    $('#canvas').html(''); $('#search_results').html("");
+
+
+//                    if ($.isArray(responseJson) && (responseJson.length > 0)) {
+//                        var g = new Graph();
+//                        for (let x = 0; x < responseJson.length; ++x) {
+//                            for (let y = 0; y < responseJson[x].length - 1; ++y){
+//                                g.addEdge(responseJson[x][y], responseJson[x][y + 1], { directed : true });
+//                            }
+//                        }
+//
+//                        var layouter = new Graph.Layout.Spring(g);
+//                        layouter.layout();
+//
+//                        var renderer = new Graph.Renderer.Raphael('canvas', g, 800, 600);
+//                        renderer.draw();
+//                    }
+//                    else{
+                        $('#search_results').html("<h2>Found Paths</h2>");
+//                    }
+                },
+                error: function (xhr, status) {
+                    // code run if request fails; raw request and status
+                    console.log("Sorry, there was a problem!");
+                },
+                complete: function (xhr, status) {  	// code to run regardless of success or failure
+                    console.log("The request is complete!");
+                }
+            })
+
+
+        }
+
+
+        (function($) { $(function() {
+            $('#button1').click(showShortestPath);
+            $('#button2').click(showAllShortestPaths);
+        });
+        })(jQuery);
+
+    </script>
+</head>
+<body>
+<h1>Find Shortest Path</h1>
+
+<p>
+    Source: <input type="text" name="source" id="source">  <br>
+
+    Destination: <input type="text" name="destination" id="destination">
+
+    <button id='button1'>Shortest Path</button>
+
+    <button id='button2'>Reveal all Shortest Paths from source</button>
+
+</p>
+<div id="search_results">
+
+</div>
+<div id="canvas"></div>
+
+</body>
+</html>
