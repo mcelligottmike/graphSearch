@@ -23,7 +23,9 @@ Native nodejs profiler was used for performance optimization - biggest culprit b
 
 # Usage
 Code was developed against node 6. On downloading the code:
+
     * npm install - downloads and install necessary support libraries
     * npm run-script test - run unit tests
-    * npm run-script cover - run code coverage checks [Note: generates [output](file://coverage/lcov-report/index.html "Coverage report") successfully but error shown at output at the end
-    * node app.js - start web server and visit http://localhost:8081 for user interface
+    * npm run-script cover - run code coverage checks [Note: generates [output](coverage/lcov-report/index.html "Coverage report") successfully but error shown at output at the end
+    * node src/app.js - start web server and visit http://localhost:8081 for user interface
+    
