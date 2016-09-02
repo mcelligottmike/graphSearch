@@ -55,9 +55,93 @@ class GraphSearch{
     }
 
 
+    /**
+     * Given a node, discover all nodes they are connected to. If the node is connected to the same node </br>
+     * through multiple paths, then only the most direct path is revealed <br/>
+     * Note that we only traverse upto a maximum depth determined by maxDepth in the configuration (default 5 if missing) <br/>
+     * </br>
+     * @param {string} name - node we want to discover network for
+     * @returns {array} contacts - list of paths to distinct contacts
+     *
+     */
+
+    revealContacts(nodeName){
+
+        let searchPaths = [[nodeName]]; // tracks the paths we are currently investigating
+
+        if (_.isUndefined(nodeName) || (!_.isString(nodeName))){
+            console.error("Missing Source Node from search criteria");
+            this.log.error("Missing Source Node from search criteria");
+            return [];
+        }
+
+        let blackList = {},  // used to prevent cycles
+            stillProgressing = false;
+
+        let leafPosition = 0, layerCount = 0, abandonedPaths = 0;
+
+        blackList[nodeName] = 1;
+        do {
+            stillProgressing = false;
+            for (let i = 0; i < searchPaths.length; i++) {
+
+                // get leaf node
+                leafPosition = searchPaths[i].length - 1;
+
+                let adjacentNodes = this.graph.getAdjacentNodes(searchPaths[i][leafPosition]),
+                    newPath = [];
+
+                if (adjacentNodes.length > 0) {
+
+                    for (let x = 0; x < adjacentNodes.length; ++x) {
+                        // have we encountered this node already? If so then discard
+                        if (_.isUndefined(blackList[adjacentNodes[x]])) {
+                            newPath = searchPaths[i].slice(); // clone original path
+                            newPath.push(adjacentNodes[x]);
+                            searchPaths.push(newPath.slice()); // append copy of newPath into scratchList
+                            blackList[adjacentNodes[x]] = 1; // prevent cycles
+
+                            stillProgressing = true;
+                        }
+                        else {
+                            // else ignore this node as we have already taken it into account
+                            abandonedPaths++;
+                        }
+                    }
+                }
+            }
+
+            ++layerCount;
+            if (layerCount >= this.maxDepth){
+                this.log.info("Hit maximum search depth for user network search");
+                stillProgressing = false;
+            }
+            this.log.info("At depth: " + layerCount);
+            this.log.info("Current number of paths being considered: " + searchPaths.length);
+            this.log.info("Total Abandoned Paths so far [" + abandonedPaths + "] paths");
+
+        } while (stillProgressing);
+
+        this.log.info(searchPaths.length + " Paths found from " + nodeName);
+        for (let x = 0; x < searchPaths.length; ++x) {
+            this.log.debug(_.join(searchPaths[x],"->"));
+        }
+
+        return searchPaths;
+    }
+
+    /**
+     * Get the paths from source node to destination node</br>
+     * </br>
+     * @param {object} conditions - <ul> <li> conditions.source => search from this node </li>
+     *                              <li> conditions.destination => search for connection to this node </li>
+     *                              <li> conditions.searchType => "allPaths" => find all paths from source to dest, "shortestPath" => find shortest path(s) to dest </li></ul>
+     * @returns {array} paths - list of paths to specified contact
+     *
+     */
     getPaths(searchConditions){
 
-        let showNetwork = false;
+        let searchPaths = [];
 
         if (_.isUndefined(searchConditions.source) || (!_.isString(searchConditions.source))){
             console.error("Missing Source Node from search criteria");
@@ -65,7 +149,7 @@ class GraphSearch{
             return [];
         }
         if (!this.graph.existingNode(searchConditions.source)){
-            console.error("Source node does not exist in the network")
+            this.log.error("Source node does not exist in the network")
             return [];
         }
         if (_.isUndefined(searchConditions.destination) || (!_.isString(searchConditions.destination))){
@@ -73,11 +157,8 @@ class GraphSearch{
             this.log.error("Missing Destination Node from search criteria");
             return [];
         }
-        if (searchConditions.destination === "*"){
-            showNetwork = true;  // display all connection paths for this source node
-        }
-        else if (!this.graph.existingNode(searchConditions.destination)){
-            console.error("Destination node does not exist in the network")
+        if (!this.graph.existingNode(searchConditions.destination)){
+            this.log.error("Destination node does not exist in the network");
             return [];
         }
         if (_.isUndefined(searchConditions.searchType) || (!_.isString(searchConditions.searchType))){
@@ -85,20 +166,23 @@ class GraphSearch{
             this.log.info("Defaulting to finding all search paths");
         }
 
-        let searchPaths = [[searchConditions.source]]; // tracks the paths we are currently investigating
+        searchPaths = [[searchConditions.source]]; // tracks the paths we are currently investigating
 
         if ((searchConditions.searchType === "shortestPath") &&
             (searchConditions.source === searchConditions.destination)){
             this.log.info("Source and destination nodes are the same");
+            searchPaths[0].push(searchConditions.destination);
         }
         else {
 
-            let blackList = [searchConditions.source],   // used to detect cycles
+            let blackList = {},  // used to prevent cycles & path search duplication
                 scratchList = [],
                 foundShortest = false, stillProgressing = false;
 
+            let leafPosition = 0, layerCount = 0, abandonedPaths = 0;
+
+            blackList[searchConditions.source] = 1;
             do {
-                let leafPosition = 0, layerCount = 0, abandonedPaths = 0;
                 scratchList = [];
                 stillProgressing = false;
                 for (let i = 0; i < searchPaths.length; i++) {
@@ -115,30 +199,27 @@ class GraphSearch{
                         let adjacentNodes = this.graph.getAdjacentNodes(searchPaths[i][leafPosition]),
                             newPath = [];
 
-                        // strip out any of the adjacents that are in the black list
-                        let before = adjacentNodes.length;
-                        adjacentNodes = _.difference(adjacentNodes, blackList);
-                        abandonedPaths += before - adjacentNodes.length;
-
-
                         if (adjacentNodes.length > 0) {
-                            stillProgressing = true;
                             for (let x = 0; x < adjacentNodes.length; ++x) {
 
-
-                                newPath = searchPaths[i].slice(); // clone original path
-                                newPath.push(adjacentNodes[x]);
-                                scratchList.push(newPath.slice()); // append copy of newPath into scratchList
-                                if (adjacentNodes[x] != searchConditions.destination) {
-                                    blackList.push(adjacentNodes[x]); // prevent cycles
+                                // have we encountered this node already? If so then discard
+                                if (_.isUndefined(blackList[adjacentNodes[x]])) {
+                                    newPath = searchPaths[i].slice(); // clone original path
+                                    newPath.push(adjacentNodes[x]);
+                                    scratchList.push(newPath.slice()); // append copy of newPath into scratchList
+                                    if (adjacentNodes[x] != searchConditions.destination) {
+                                        blackList[adjacentNodes[x]] = 1; // prevent cycles
+                                    }
+                                    stillProgressing = true;
                                 }
+                                else{
+                                    // else ignore this node as we have already taken it into account
+                                    abandonedPaths++;
+                                }
+
 
                             }
                         }
-                        // else if (showNetwork && searchPaths[i].length <= this.maxDepth){
-                        //     // Record the path anyway
-                        //     scratchList.push(searchPaths[i]);
-                        // }
                     }
                 }
 
@@ -155,13 +236,13 @@ class GraphSearch{
                 }
 
                 ++layerCount;
-                console.log("At depth: " + layerCount);
-                console.log("Current number of paths being considered: " + scratchList.length);
-                console.log("Total Abandoned Paths so far [" + abandonedPaths + "] paths");
+                this.log.info("At depth: " + layerCount);
+                this.log.info("Current number of paths being considered: " + scratchList.length);
+                this.log.info("Total Abandoned Paths so far [" + abandonedPaths + "] paths");
 
                 searchPaths = scratchList;
 
-                // todo: lets sort the searchpaths so we check those that have the least number of
+                // todo: sort the searchpaths so we check those that have the least number of
                 // acquaintances first - will optimize for all but the worst case
 
 
@@ -170,7 +251,7 @@ class GraphSearch{
         }
         this.log.info(searchPaths.length + " Paths found from " + searchConditions.source + " to " + searchConditions.destination);
         for (let x = 0; x < searchPaths.length; ++x) {
-            this.log.info(_.join(searchPaths[x],"->"));
+            this.log.debug(_.join(searchPaths[x],"->"));
         }
         return searchPaths;
     }
