@@ -83,12 +83,19 @@ graph.readData()
 
         app.get('/searchAll', function (req, res) {
             let results = search.revealContacts(req.query.source);
-            let response = "";
-            for (let x = 0; x < results.length; ++x) {
-                response = _.join(results[x], "->") + "<br/>";
+
+            let numberOfPaths = (_.isArray(results)) ? results.length : 0;
+            let response = {numPaths:numberOfPaths, paths:[]};
+
+            if (numberOfPaths > 20){
+                numberOfPaths = 20; // max limit
+            }
+
+            for (let x = 0; x < numberOfPaths; ++x) {
+                response.paths.push(results[x]);
             }
             console.log(response);
-            res.end(JSON.stringify(results));
+            res.end(JSON.stringify(response));
         })
 
         var server = app.listen(8081, function () {
