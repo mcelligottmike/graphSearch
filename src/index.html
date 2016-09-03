@@ -9,6 +9,17 @@
     <script type="text/javascript" src="/js/dracula_graph.js"></script>
 
     <script>
+        var formatSourceNodevar = function(r, n) {
+            /* the Raphael set is obligatory, containing all you want to display */
+            var set = r.set().push(
+                    /* custom objects go here */
+                    r.rect(n.point[0]-120, n.point[1]-20, 250, 86)
+                            .attr({"fill": "#fa8", "stroke-width": 2, r : "9px"}))
+                    .push(r.text(n.point[0], n.point[1] + 30, n.label)
+                            .attr({"font-size":"20px"}));
+            return set;
+        };
+
         function showShortestPath () {
             $.ajax({
                 url: "/search?source="+$('#source').val() + "&destination=" + $('#destination').val(),
@@ -27,6 +38,18 @@
 
                     if ($.isArray(responseJson) && (responseJson.length > 0)) {
                         var g = new Graph();
+
+                        g.addNode($('#source').val(), {
+                            label : $('#source').val() ,
+                            /* filling the shape with a color makes it easier to be dragged */
+                            render : formatSourceNodevar
+                        });
+                        g.addNode($('#destination').val(), {
+                            label : $('#destination').val() ,
+                            /* filling the shape with a color makes it easier to be dragged */
+                            render : formatSourceNodevar
+                        });
+
                         for (let x = 0; x < responseJson.length; ++x) {
                             for (let y = 0; y < responseJson[x].length - 1; ++y){
                                 g.addEdge(responseJson[x][y], responseJson[x][y + 1], { directed : true });
@@ -38,6 +61,8 @@
 
                         var renderer = new Graph.Renderer.Raphael('canvas', g, 800, 600);
                         renderer.draw();
+
+                        $('#search_results').html("Source and destination nodes are shown below as rectangles. Drag and rearrange nodes if necessary");
                     }
                     else{
                         $('#search_results').html("<h2>No matches found</h2>");
@@ -56,7 +81,7 @@
         }
 
         function showAllShortestPaths () {
-            $.ajax({
+                $.ajax({
                 url: "/searchAll?source="+$('#source').val(),
                 type: "GET",
                 dataType: "json",
@@ -64,24 +89,34 @@
                     // clear any existing graph display
                     $('#canvas').html(''); $('#search_results').html("");
 
+                    let msg = "<h2>Found " + responseJson.numPaths + " Paths</h2>";
+                    if (responseJson.numPaths > responseJson.paths.length){
+                        msg = msg + "Too many to display - just displaying " + responseJson.paths.length + " of the paths";
+                    }
+                    $('#search_results').html(msg);
 
-//                    if ($.isArray(responseJson) && (responseJson.length > 0)) {
-//                        var g = new Graph();
-//                        for (let x = 0; x < responseJson.length; ++x) {
-//                            for (let y = 0; y < responseJson[x].length - 1; ++y){
-//                                g.addEdge(responseJson[x][y], responseJson[x][y + 1], { directed : true });
-//                            }
-//                        }
-//
-//                        var layouter = new Graph.Layout.Spring(g);
-//                        layouter.layout();
-//
-//                        var renderer = new Graph.Renderer.Raphael('canvas', g, 800, 600);
-//                        renderer.draw();
-//                    }
-//                    else{
-                        $('#search_results').html("<h2>Found Paths</h2>");
-//                    }
+                    if (responseJson.numPaths > 0){
+                        let g = new Graph();
+
+                        g.addNode($('#source').val(), {
+                            label : $('#source').val() ,
+                            /* filling the shape with a color makes it easier to be dragged */
+                            render : formatSourceNodevar
+                        });
+
+                        for (let x = 0; x < responseJson.paths.length; ++x) {
+                            for (let y = 0; y < responseJson.paths[x].length - 1; ++y){
+                                g.addEdge(responseJson.paths[x][y], responseJson.paths[x][y + 1], { directed : true });
+                            }
+                        }
+
+                        var layouter = new Graph.Layout.Spring(g);
+                        layouter.layout();
+
+                        var renderer = new Graph.Renderer.Raphael('canvas', g, 800, 600);
+                        renderer.draw();
+                    }
+
                 },
                 error: function (xhr, status) {
                     // code run if request fails; raw request and status
