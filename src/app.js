@@ -86,7 +86,7 @@ graph.readData()
         app.get('/searchAll', function (req, res) {
             let results = search.revealContacts(req.query.source);
 
-            let numberOfPaths = (_.isArray(results)) ? results.length : 0;
+            let numberOfPaths = (_.isArray(results)) ? (results.length - 1) : 0; // exclude self path
             let response = {numPaths:numberOfPaths, paths:[]};
 
             if (numberOfPaths > 20){
