@@ -212,6 +212,26 @@ describe('Graph Functionality Tests', function () {
             }
         });
 
+        /** @test {node count} */
+        it('should successfully count the number of nodes', function (done) {
+            try {
+
+                var graph = new Graph({
+                    log: log
+                });
+
+
+                graph.addEdge("A","B");
+                graph.addEdge("A","C");
+                (graph.getNodeCount()).should.equal(3);
+                done();
+            }
+            catch (e) {
+                log.error(e);
+                done(e);
+            }
+        });
+
         /** @test {edge removal} */
         it('should successfully remove an edge', function (done) {
             try {
