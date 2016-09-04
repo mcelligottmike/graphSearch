@@ -36,13 +36,9 @@ const Search = require('../src/graphSearch');
 
 var express = require('express');
 var app = express();
-var bodyParser = require('body-parser');
-
-// Create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 app.use(express.static('public'));
-
+app.use(express.static('coverage'));
 
 
 let graph = new Graph({
@@ -63,6 +59,12 @@ graph.readData()
         app.get('/bundle.js', function (req, res) {
             res.sendFile( __dirname + "/" + "bundle.js" );
         })
+
+        app.get('/nodeCount', function (req, res) {
+            res.end(JSON.stringify(graph.getNodeCount()));
+        })
+
+
 
         app.get('/search', function (req, res) {
 
