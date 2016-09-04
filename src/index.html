@@ -134,13 +134,35 @@
         (function($) { $(function() {
             $('#button1').click(showShortestPath);
             $('#button2').click(showAllShortestPaths);
+
+                $.ajax({
+                    url: "/nodeCount",
+                    type: "GET",
+                    dataType: "json",
+                    success: function (responseJson) {
+                        // code to run if the request succeeds; parameter = response
+                        $('#nodeCount').html(responseJson);
+                    },
+                    error: function (xhr, status) {
+                        // code run if request fails; raw request and status
+                        console.log("Count not get node count...");
+                    },
+                    complete: function (xhr, status) {  	// code to run regardless of success or failure
+                        console.log("The nodecount request is complete");
+                    }
+
+                });
+
+
+
+
         });
         })(jQuery);
 
     </script>
 </head>
 <body>
-<h1>Find Shortest Path</h1>
+<h1>Find Shortest Path  (Graph contains <span id="nodeCount"></span> nodes)</h1>
 
 <p>
     Source: <input type="text" name="source" id="source">  <br>
