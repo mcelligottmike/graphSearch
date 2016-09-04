@@ -73,6 +73,16 @@ class Graph{
     }
 
     /**
+     * Return number of nocdes in the graph </br>
+     * </br>
+     * </br>
+     * @returns {integer} - Number of nodes in the network
+     */
+    getNodeCount(){
+        return Object.keys(this.matrix).length
+    }
+
+    /**
      * Add record of connection from source -> destination to existing </br>
      * records stored in graph </br>
      * </br>
