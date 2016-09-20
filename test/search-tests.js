@@ -234,6 +234,43 @@ describe('Graph Search Tests', function () {
             }
         });
 
+
+        it('should locate network of a user', function (done) {
+            try {
+
+                let graph = new Graph({
+                        log: log
+                    }),
+                    search = new Search(graph,{log: log});
+
+                graph.addEdge("A","B");
+                graph.addEdge("A","C");
+                graph.addEdge("A","D");
+                graph.addEdge("B","H");
+                graph.addEdge("B","I");
+                graph.addEdge("B","J");
+                graph.addEdge("C","K");
+                graph.addEdge("C","M");
+                graph.addEdge("H","M");
+                graph.addEdge("D","M");
+
+                // A's entire network should include
+                // A->A, A->B, A->C, A->D, A->B->H, A->B->J, A->C->K, A->C->M, A->D->M
+                // Even though A->B->H->M is also in the network, we should not capture it because A->C->M
+                // already captures the relationship between A and M
+                let results = search.revealContacts("A");
+                results.should.be.instanceof(Array).and.have.lengthOf(9);
+
+                done();
+
+            }
+            catch (e) {
+                log.error(e);
+                done(e);
+            }
+        });
+
+
     });
 
 
