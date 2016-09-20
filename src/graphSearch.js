@@ -174,14 +174,16 @@ class GraphSearch{
             searchPaths[0].push(searchConditions.destination);
         }
         else {
-
+            // *************************************************
+            // Initiate a breadth first search for shortest path
+            // *************************************************
             let blackList = {},  // used to prevent cycles & path search duplication
                 scratchList = [],
                 foundShortest = false, stillProgressing = false;
 
             let leafPosition = 0, layerCount = 0, abandonedPaths = 0;
 
-            blackList[searchConditions.source] = 1;
+            blackList[searchConditions.source] = 1;   // add the originating node to blacklist
             do {
                 scratchList = [];
                 stillProgressing = false;
@@ -191,8 +193,8 @@ class GraphSearch{
                     leafPosition = searchPaths[i].length - 1;
 
                     if (searchPaths[i][leafPosition] === searchConditions.destination) {
-                        // no need to progress any further along this path
-                        scratchList.push(searchPaths[i].slice());
+                        // no need to progress any further along this path - we have found a path
+                        scratchList.push(searchPaths[i].slice()); // record copy of path
                     }
                     else
                     {
